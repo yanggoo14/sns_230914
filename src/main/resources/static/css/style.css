@@ -1,0 +1,8 @@
+@charset "UTF-8";
+#wrap{
+	width: 1000px;
+	height:1200px;
+	}
+header{height: 100px;}
+.contents{min-height: 500px;}
+footer{height:100px}
