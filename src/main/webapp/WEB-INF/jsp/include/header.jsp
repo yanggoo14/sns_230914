@@ -6,6 +6,6 @@
 	</div>
 	<div>
 		<span>marondal님 안녕하세요!</span>
-		<a href="/user/sign-out">로그아웃</a>
+		<a href="/user/sign-out" class="text-white font-weight-bold">로그아웃</a>
 	</div>
 </div>
