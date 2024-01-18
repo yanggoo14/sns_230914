@@ -45,3 +45,75 @@
 		</form>
 	</div>
 </div>
+
+<script>
+$(document).ready(function() {
+	
+	// 중복확인 버튼 클릭
+	$("#loginIdCheckBtn").on('click', function() {
+		//alert("클릭");
+		
+		// 경고 문구 초기화
+		$('#idCheckLength').addClass('d-none');
+		$('#idCheckDuplicated').addClass('d-none');
+		$('#idCheckOk').addClass('d-none');
+		
+		let loginId = $('#loginId').val().trim();
+		if (loginId.length < 4) {
+			$('#idCheckLength').removeClass('d-none');
+			return;
+		}
+		
+		// AJAX 통신 - 중복확인
+		$.ajax({
+			// request
+			url:"/user/is-duplicated-id"
+			, data: {"loginId":loginId}
+			
+			// response
+			, success: function(data) {
+				if (data.is_duplicated_id) {
+					// 중복
+					$('#idCheckDuplicated').removeClass('d-none');
+				} else {
+					// 중복 아님 => 사용 가능
+					$('#idCheckOk').removeClass('d-none');
+				}
+			}
+			, error: function(request, status, error) {
+				alert("중복확인에 실패했습니다.");
+			}
+		});
+	});
+	
+	// 로그인 서브밋
+	$('#signUpForm').on('submit', function(e) {
+		e.preventDefault(); // submit 자동 수행 중단
+		
+		let loginId = $('input[name=loginId]').val().trim();
+		if (loginId == '') {
+			alert("아이디를 입력해주세요.");
+			return false;
+		}
+		
+		let password = $('input[name=password]').val();
+		if (password == '') {
+			alert("비밀번호를 입력해주세요.");
+			return false;
+		}
+		
+		// AJAX로 서브밋
+		let url = $(this).attr("action");
+		let data = $(this).serialize(); // form의 name 속성으로 data를 구성한다.
+		
+		$.post(url, data)
+		.done(function(data) {
+			if (data.result == "성공") {
+				location.href="/timeline/timeline-view"; 
+			} else {
+				alert("로그인에 실패했습니다. 다시 시도해주세요.");
+			}
+		});
+	});
+});
+</script>
