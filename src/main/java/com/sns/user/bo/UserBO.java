@@ -1,5 +1,7 @@
 package com.sns.user.bo;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,4 +37,10 @@ public class UserBO {
 	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
 		return userRepository.findByLoginIdAndPassword(loginId, password);
 	}
+	// cardview에 들어가는
+	// input: userid     output: UserEntity
+	public UserEntity getUserEntityById(int id) {
+		return userRepository.findById(id).orElse(null); // optional 에러를 안나게하려면
+	}
+	
 }

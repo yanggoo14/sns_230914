@@ -19,7 +19,7 @@ public class CommentController {
 	@Autowired CommentBO commentBO;
 	
 	@PostMapping("/create")
-	public Map<String, Object> commentCreate(
+	public Map<String, Object> create(
 			@RequestParam("postId") int postId,
 			@RequestParam("content") String Content,
 			HttpSession session){
