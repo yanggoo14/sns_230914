@@ -26,5 +26,9 @@ public class CardView {
 		private List<CommentView> commentList;
 		// List<comment>로 하면 안됨. comment 테이블에 userid밖에 없다
 	// 좋아요 개수
+		// 좋아요 개수
+		private int likeCount;
+		
+		private boolean filledLike;
 	
 }
