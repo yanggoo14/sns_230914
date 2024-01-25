@@ -50,4 +50,7 @@ public class CommentBO {
 		// 결과 리스트 리턴
 		return commentViewList;
 	}
+	public void deleteCommentById(int id) {
+		commentMapper.deleteCommentById(id);
+	}
 }

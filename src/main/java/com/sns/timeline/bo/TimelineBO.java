@@ -17,30 +17,32 @@ import com.sns.user.entity.UserEntity;
 
 @Service
 public class TimelineBO {
-	//  input:x        output: List<CardView>
-	@Autowired 
-	PostBO postBO;
 	
-	@Autowired 
-	UserBO userBO;
+	@Autowired
+	private PostBO postBO;
+	
+	@Autowired
+	private UserBO userBO;
+	
+	@Autowired
+	private CommentBO commentBO;
 	
 	@Autowired
 	private LikeBO likeBO;
-	
-	@Autowired
-	CommentBO commentBO;
-	public List<CardView> generateCardViewList(){
+
+	// input:userId(비로그인:null, 로그인:userId)    output: List<CardView>
+	public List<CardView> generateCardViewList(Integer userId) {
 		List<CardView> cardViewList = new ArrayList<>();
 		
 		// 글 목록을 가져온다. List<PostEntity>
-		List<PostEntity> postList = postBO.getPostList(); 
+		List<PostEntity> postList = postBO.getPostList();
 		
 		// 글 목록 반복문 순회
-		// 향상된 for문 사용
-		
-		for(PostEntity post : postList) {
-			// post 하나에 대응되는 하나의 카드를 만든다. 
+		// post => cardView     => cardViewList에 넣기
+		for (PostEntity post : postList) {
+			// post 하나에 대응되는 하나의 카드를 만든다.
 			CardView cardView = new CardView();
+			
 			// 글 1개
 			cardView.setPost(post);
 			
@@ -48,27 +50,21 @@ public class TimelineBO {
 			UserEntity user = userBO.getUserEntityById(post.getUserId());
 			cardView.setUser(user);
 			
-			// 댓글들, 
+			// 댓글들
 			List<CommentView> commentList = commentBO.generateCommentViewListByPostId(post.getId());
 			cardView.setCommentList(commentList);
-			//좋아요
+			
 			// 좋아요 개수
-						int likeCount = likeBO.getLikeCountByPostId(post.getId());
-						cardView.setLikeCount(likeCount);
-						
-						// 로그인된 사람이 좋아요를 했는지 여부(비로그인 사용자 고려)
-//						boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), );
-//						cardView.setFilledLike(filledLike);
+			int likeCount = likeBO.getLikeCountByPostId(post.getId());
+			cardView.setLikeCount(likeCount);
 			
+			// 로그인된 사람이 좋아요를 했는지 여부(비로그인 사용자 고려)
+			boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), userId);
+			cardView.setFilledLike(filledLike);
 			
-			//   ★★★★★★★★★ 마지막에 cardVㅑew를 list에 넣어야한다 ★★★★★★★★★
-			cardViewList.add(cardView); 
+			// ★★★★★ 마지막에 cardView를 list에 넣는다.
+			cardViewList.add(cardView);
 		}
-		
-		// Post => CardView  => cardViewList에 넣기
-		
-		
-	
 		
 		return cardViewList;
 	}

@@ -43,4 +43,5 @@ public class FileManagerService {
 			// /images/aaaa_1689839327304/boho-g887cb34df_640.jpg
 			return "/images/" + directoryName + file.getOriginalFilename();
 		}
+		
 }

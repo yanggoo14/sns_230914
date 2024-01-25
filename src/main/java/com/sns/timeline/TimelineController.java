@@ -19,19 +19,11 @@ public class TimelineController {
 	private TimelineBO timelineBO;
 	@GetMapping("/timeline/timeline-view")
 	public String timelineView(Model model, HttpSession session) {
-		
-		// 글 목록 조회 (CardView를 가져오면서 밑에 안써도 됨)
-		//List<PostEntity> postList = postBO.getPostList();
-		//List<Comment> commentList = commentBO.getListComment();
-		
-		//model.addAttribute("postList", postList);
-		//model.addAttribute("commentList", commentList);
-	
 		Integer userId = (Integer)session.getAttribute("userId");
-		List<CardView> cardViewList=  timelineBO.generateCardViewList();
-		model.addAttribute("cardViewList",cardViewList);
-		model.addAttribute("viewName", "timeline/timeline");
+		List<CardView> cardViewList = timelineBO.generateCardViewList(userId);
 		
+		model.addAttribute("cardViewList", cardViewList);
+		model.addAttribute("viewName", "timeline/timeline");
 		return "template/layout";
 	}
 }

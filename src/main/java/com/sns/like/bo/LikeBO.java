@@ -12,7 +12,7 @@ public class LikeBO {
 	
 	// input:postId, userId     output: X
 	public void likeToggle(int postId, int userId) {
-		if (likeMapper.SelectLikeCountByPostIdOrUserId(postId, userId) > 0) {
+		if (likeMapper.selectLikeCountByPostIdOrUserId(postId, userId) > 0) {
 			// 있으면 삭제
 			likeMapper.deleteLikeByPostIdUserId(postId, userId);
 		} else {
@@ -22,19 +22,21 @@ public class LikeBO {
 	}
 	
 	public int getLikeCountByPostId(int postId) {
-		return likeMapper.selectLikeCountByPostId(postId);
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, null);
 	}
 	
 	public int getLikeCountByPostIdUserId(int postId, int userId) {
-		return likeMapper.SelectLikeCountByPostIdOrUserId(postId, userId);
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, userId);
 	}
 	
-	// input: postId, userId (null or)    output : boolean
+	// input:postId, userId(null or)    output:boolean
 	public boolean getLikeCountByPostIdUserId(int postId, Integer userId) {
-		if(userId == null) {
-			return false;	// 비로그인이면 무조건 빈하트 => false 	
+		// 비로그인이면 무조건 빈하트 => false
+		if (userId == null) {
+			return false;
 		}
-		 // 로그인이 0보다 크면(1이면) 채운다, 그렇지 않으면 false
-		return likeMapper.SelectLikeCountByPostIdOrUserId(postId, userId) > 0;
+		
+		// 로그인 - 0보다 크면(1이면) 채운다, 그렇지않으면 false
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, userId) > 0;
 	}
 }
